@@ -23,7 +23,7 @@ logging.getLogger("huggingface_hub").setLevel(logging.ERROR)
 
 HERMES_HOME = Path(os.environ.get("HERMES_HOME", "/opt/data"))
 STATUS_FILE = Path("/tmp/huggingmes-sync-status.json")
-INTERVAL = int(os.environ.get("SYNC_INTERVAL", "180"))
+INTERVAL = int(os.environ.get("SYNC_INTERVAL", "600"))
 INITIAL_DELAY = int(os.environ.get("SYNC_START_DELAY", "10"))
 HF_TOKEN = os.environ.get("HF_TOKEN", "").strip()
 HF_USERNAME = os.environ.get("HF_USERNAME", "").strip()

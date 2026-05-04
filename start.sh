@@ -14,7 +14,7 @@ PUBLIC_PORT="${PORT:-7861}"
 GATEWAY_API_PORT="${API_SERVER_PORT:-8642}"
 DASHBOARD_PORT="${DASHBOARD_PORT:-9119}"
 TELEGRAM_WEBHOOK_PORT="${TELEGRAM_WEBHOOK_PORT:-8765}"
-SYNC_INTERVAL="${SYNC_INTERVAL:-180}"
+SYNC_INTERVAL="${SYNC_INTERVAL:-600}"
 BACKUP_DATASET="${BACKUP_DATASET_NAME:-huggingmes-backup}"
 CF_PROXY_ENV_FILE="/tmp/huggingmes-cloudflare-proxy.env"
 
@@ -118,7 +118,7 @@ case "$MODEL_PREFIX" in
     [ "$PROVIDER_FOR_CONFIG" = "auto" ] && PROVIDER_FOR_CONFIG="openrouter"
     MODEL_FOR_CONFIG="${MODEL_INPUT#openrouter/}"
     ;;
-  huggingface)
+  huggingface|hf)
     [ -n "$LLM_API_KEY" ] && export HF_TOKEN="${HF_TOKEN:-$LLM_API_KEY}"
     [ "$PROVIDER_FOR_CONFIG" = "auto" ] && PROVIDER_FOR_CONFIG="huggingface"
     MODEL_FOR_CONFIG="${MODEL_INPUT#huggingface/}"
@@ -145,14 +145,35 @@ case "$MODEL_PREFIX" in
   kimi-coding|moonshot)
     [ -n "$LLM_API_KEY" ] && export KIMI_API_KEY="${KIMI_API_KEY:-$LLM_API_KEY}"
     ;;
+  kimi-coding-cn|moonshot-cn|kimi-cn)
+    [ -n "$LLM_API_KEY" ] && export KIMI_CN_API_KEY="${KIMI_CN_API_KEY:-$LLM_API_KEY}"
+    ;;
   minimax)
     [ -n "$LLM_API_KEY" ] && export MINIMAX_API_KEY="${MINIMAX_API_KEY:-$LLM_API_KEY}"
+    ;;
+  minimax-cn)
+    [ -n "$LLM_API_KEY" ] && export MINIMAX_CN_API_KEY="${MINIMAX_CN_API_KEY:-$LLM_API_KEY}"
     ;;
   xiaomi)
     [ -n "$LLM_API_KEY" ] && export XIAOMI_API_KEY="${XIAOMI_API_KEY:-$LLM_API_KEY}"
     ;;
   zai|z-ai|z.ai|glm)
     [ -n "$LLM_API_KEY" ] && export GLM_API_KEY="${GLM_API_KEY:-$LLM_API_KEY}"
+    ;;
+  arcee|arcee-ai|arceeai)
+    [ -n "$LLM_API_KEY" ] && export ARCEEAI_API_KEY="${ARCEEAI_API_KEY:-$LLM_API_KEY}"
+    ;;
+  gmi|gmi-cloud|gmicloud)
+    [ -n "$LLM_API_KEY" ] && export GMI_API_KEY="${GMI_API_KEY:-$LLM_API_KEY}"
+    ;;
+  alibaba)
+    [ -n "$LLM_API_KEY" ] && export DASHSCOPE_API_KEY="${DASHSCOPE_API_KEY:-$LLM_API_KEY}"
+    ;;
+  alibaba-coding-plan|alibaba_coding)
+    [ -n "$LLM_API_KEY" ] && export DASHSCOPE_API_KEY="${DASHSCOPE_API_KEY:-$LLM_API_KEY}"
+    ;;
+  tencent-tokenhub|tencent|tokenhub|tencentmaas)
+    [ -n "$LLM_API_KEY" ] && export TOKENHUB_API_KEY="${TOKENHUB_API_KEY:-$LLM_API_KEY}"
     ;;
   nvidia)
     [ -n "$LLM_API_KEY" ] && export NVIDIA_API_KEY="${NVIDIA_API_KEY:-$LLM_API_KEY}"
@@ -261,7 +282,7 @@ else
   echo "Telegram  : not configured"
 fi
 if [ -n "${HF_TOKEN:-}" ]; then
-  echo "Backup    : ${BACKUP_DATASET} (every ${SYNC_INTERVAL:-180}s)"
+  echo "Backup    : ${BACKUP_DATASET} (every ${SYNC_INTERVAL:-600}s)"
 else
   echo "Backup    : disabled"
 fi
