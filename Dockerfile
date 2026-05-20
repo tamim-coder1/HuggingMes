@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
     jq \
+    sudo \
     python3 \
     python3-venv \
     python3-pip \
@@ -30,7 +31,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     fonts-liberation \
     fonts-noto-color-emoji \
     && rm -rf /var/lib/apt/lists/* \
-    && uv pip install --python /opt/hermes/.venv/bin/python --no-cache-dir huggingface_hub hf_transfer jupyterlab
+    && uv pip install --python /opt/hermes/.venv/bin/python --no-cache-dir huggingface_hub hf_transfer jupyterlab \
+    && printf 'hermes ALL=(ALL) NOPASSWD: ALL\n' > /etc/sudoers.d/hermes \
+    && chmod 0440 /etc/sudoers.d/hermes \
+    && visudo -cf /etc/sudoers.d/hermes
 
 COPY --chown=hermes:hermes start.sh /opt/huggingmes/start.sh
 COPY --chown=hermes:hermes health-server.js /opt/huggingmes/health-server.js
